@@ -4,6 +4,7 @@ import Marquee from "./components/Marquee";
 import Projects from "./components/Projects";
 import About from "./components/About";
 import Work from "./components/Work";
+import Contact from "./components/Contact";
 
 
 export default function App() {
@@ -15,6 +16,7 @@ export default function App() {
       <Projects />
       <About />
       <Work />
+      <Contact />
     </main>
   )
 }

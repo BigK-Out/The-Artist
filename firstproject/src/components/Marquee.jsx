@@ -6,9 +6,16 @@ const Marquee = () => {
     <div className="mt-4 w-full bg-[#FFB300] text-black lg:py-6">
         <div className="flex overflow-hidden whitespace-nowrap">
             {[...Array(2)].map((_, i) => (
-                <motion.h1 initial={{x: "-100%"}} animate={{x:"0"}} transition={{ repeat: Infinity, ease: "linear", duration: 100}} key={i} className="py-2 text-3xl font-bold  leading-none tracking-tighter lg:text-7xl">
+                <motion.div
+                    key={i}
+                    aria-hidden={i > 0}
+                    initial={{ x: "0%" }}
+                    animate={{ x: "-100%" }}
+                    transition={{ repeat: Infinity, ease: "linear", duration: 100 }}
+                    className="shrink-0 py-2 text-3xl font-bold leading-none tracking-tighter lg:text-7xl"
+                >
                     {MARQUEE_TEXT}
-                </motion.h1>
+                </motion.div>
             ))}
         </div>
     </div>

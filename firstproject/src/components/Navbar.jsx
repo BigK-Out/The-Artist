@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { FaTimes, FaBars } from 'react-icons/fa';
+import { FaXmark, FaBars } from 'react-icons/fa6';
 import { LINKS } from "../constants/index";
 import { AnimatePresence, motion } from "framer-motion"
 
@@ -8,13 +8,16 @@ const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false)
 
     const toggleMenu = () => {
-        setIsOpen(!isOpen)
+        setIsOpen((open) => !open)
     }
 
     useEffect(() => {
-        if (isOpen) {
-            document.body.style.overflow = "hidden";
-        } else {
+        document.body.style.overflow = isOpen ? "hidden" : "auto";
+        if (!isOpen) return () => { document.body.style.overflow = "auto"; }
+        const onKey = (e) => { if (e.key === "Escape") setIsOpen(false) }
+        window.addEventListener("keydown", onKey)
+        return () => {
+            window.removeEventListener("keydown", onKey)
             document.body.style.overflow = "auto";
         }
     }, [isOpen])
@@ -34,9 +37,9 @@ const Navbar = () => {
   return (
     <>
         <nav className="fixed right-0 top-0 z-30 p-4">
-            <button onClick={toggleMenu} className="rounded-md p-2">
+            <button onClick={toggleMenu} aria-label={isOpen ? "Close menu" : "Open menu"} aria-expanded={isOpen} aria-controls="site-menu" className="rounded-md p-2">
                 {isOpen ? (
-                    <FaTimes className="h-6 w-6" />
+                    <FaXmark className="h-6 w-6" />
                 ) : (
                     <FaBars className="h-6 w-6" />
                 )}
@@ -44,7 +47,7 @@ const Navbar = () => {
         </nav>
         <AnimatePresence>
         {isOpen && (
-            <motion.div initial="hidden" animate="visible" exit="hidden" variants={containerVariants} className="fixed inset-0 z-20 flex flex-col items-center justify-center bg-black text-white">
+            <motion.div id="site-menu" initial="hidden" animate="visible" exit="hidden" variants={containerVariants} className="fixed inset-0 z-20 flex flex-col items-center justify-center bg-black text-white">
                 <ul className="space-y-6 text-3xl">
                     {LINKS.map((link) => (
                         <motion.li variants={linkVariants} key={link.id}>
